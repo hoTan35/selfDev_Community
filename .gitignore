@@ -1,0 +1,34 @@
+# IntelliJ / IDE
+.idea/
+*.iml
+out/
+gen/
+.classpath
+.project
+.settings/
+.nb-gradle/
+
+# Build results
+backend/build/
+frontend/dist/
+frontend/node_modules/
+
+# Gradle related
+backend/.gradle/
+backend/gradlew
+backend/gradlew.bat
+backend/gradle/
+backend/settings.gradle
+backend/build.gradle
+
+# OS / Misc
+.DS_Store
+Thumbs.db
+*.log
+.env
+.local
+
+# Frontend specific (React/Vite)
+frontend/.eslintcache
+frontend/*.tsbuildinfo
+frontend/package-lock.json
