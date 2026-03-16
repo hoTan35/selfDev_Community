@@ -19,6 +19,7 @@
 - [x] `PostController` 구현 (API 엔드포인트) 완료
 - [x] **Swagger (SpringDoc)** 의존성 추가 완료 (`build.gradle`)
 - [x] **User 관련 DTO** 생성 완료 (`UserRequestDto`, `UserResponseDto`)
+- [x] **Git 저장소 초기화** 및 통합 `.gitignore` 설정 완료
 
 ## 📅 현재 진행 중인 단계
 - **사용자(User) 및 인증(Authentication) 기능 구현**
