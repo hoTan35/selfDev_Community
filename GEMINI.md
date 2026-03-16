@@ -20,19 +20,19 @@
 - [x] **Swagger (SpringDoc)** 의존성 추가 완료 (`build.gradle`)
 - [x] **User 관련 DTO** 생성 완료 (`UserRequestDto`, `UserResponseDto`)
 - [x] **Git 저장소 초기화** 및 통합 `.gitignore` 설정 완료
+- [x] **UserService (Interface/Impl)** 구현 완료 (회원가입, 로그인 기본 로직)
+- [x] **UserController** 구현 완료 (API 엔드포인트)
 
 ## 📅 현재 진행 중인 단계
-- **사용자(User) 및 인증(Authentication) 기능 구현**
-  - `UserService` (회원가입/로그인 로직) 구현 준비 중
+- **API 테스트 및 문서화**
+  - Swagger UI를 통한 User/Post API 동작 확인 중
 
 ## 📋 향후 할 일 (To-Do)
-- [ ] **사용자(User) 및 로그인 기능 구현**
-  - [ ] `UserService` 구현 (회원가입, 로그인 기본 로직)
-  - [ ] `UserController` 구현 (회원가입/로그인 API)
-  - [ ] Spring Security 및 JWT 설정 (보안 강화)
 - [ ] **API 문서화 및 도구 설정**
-  - [ ] Swagger UI 접속 테스트 및 API 명세 확인
+  - [ ] Swagger UI 접속 테스트 및 API 명세 확인 (진행 중)
   - [ ] **Docker** 환경 구성: `Dockerfile` 및 `docker-compose.yml` 작성
+- [ ] **보안 강화**
+  - [ ] Spring Security 및 JWT 설정 적용
 - [ ] **Frontend 연동**
   - [ ] API 호출부 작성 (Axios/React Query)
   - [ ] 게시글 목록 및 상세 페이지 UI 구현
