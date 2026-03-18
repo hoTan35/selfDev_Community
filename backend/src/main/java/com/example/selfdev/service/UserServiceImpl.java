@@ -4,7 +4,9 @@ import com.example.selfdev.dto.UserRequestDto;
 import com.example.selfdev.dto.UserResponseDto;
 import com.example.selfdev.entity.User;
 import com.example.selfdev.repository.UserRepository;
+import com.example.selfdev.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     @Transactional
@@ -23,29 +27,32 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
         }
 
-        // 비밀번호 암호화는 나중에 Security 적용 시 추가 예정
+        // 비밀번호 암호화
         User user = User.builder()
                 .username(requestDto.getUsername())
-                .password(requestDto.getPassword())
+                .password(passwordEncoder.encode(requestDto.getPassword()))
                 .email(requestDto.getEmail())
                 .role(User.Role.USER) // 기본 역할은 USER
                 .build();
 
         User savedUser = userRepository.save(user);
-        return convertToResponseDto(savedUser);
+        return convertToResponseDto(savedUser, null);
     }
 
     @Override
-    public UserResponseDto login(String username, String password) {
-        User user = userRepository.findByUsername(username)
+    public UserResponseDto login(UserRequestDto requestDto) {
+        User user = userRepository.findByUsername(requestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 비밀번호 단순 비교 (임시)
-        if (!user.getPassword().equals(password)) {
+        // 비밀번호 암호화 검증
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return convertToResponseDto(user);
+        // 로그인 성공 시 JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole().name());
+
+        return convertToResponseDto(user, token);
     }
 
     @Override
@@ -53,15 +60,16 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         
-        return convertToResponseDto(user);
+        return convertToResponseDto(user, null);
     }
 
-    private UserResponseDto convertToResponseDto(User user) {
+    private UserResponseDto convertToResponseDto(User user, String token) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .token(token)
                 .build();
     }
 }

@@ -10,10 +10,9 @@ public interface UserService {
     UserResponseDto signup(UserRequestDto requestDto);
 
     /**
-     * 로그인 (임시 로직)
-     * 추후 JWT 연동 예정
+     * 로그인
      */
-    UserResponseDto login(String username, String password);
+    UserResponseDto login(UserRequestDto requestDto);
 
     /**
      * 사용자 정보 조회

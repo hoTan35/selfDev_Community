@@ -7,6 +7,7 @@ import com.example.selfdev.entity.User;
 import com.example.selfdev.repository.PostRepository;
 import com.example.selfdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +24,9 @@ public class PostService {
 
     @Transactional
     public PostResponseDto createPost(PostRequestDto requestDto) {
-        User author = userRepository.findById(requestDto.getAuthorId())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. ID: " + requestDto.getAuthorId()));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User author = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         Post post = Post.builder()
                 .title(requestDto.getTitle())
